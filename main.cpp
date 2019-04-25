@@ -1,6 +1,8 @@
 #include "graphics.h"
 #include "Button.h"
 #include <iostream>
+#include "confetti.h"
+#include "game.h"
 #include <vector>
 #include <time.h>
 using namespace std;
@@ -8,11 +10,16 @@ using namespace std;
 GLdouble width, height;
 int wd;
 Quad rect({1, 0, 0}, {100, 100}, 100, 50);
-Button spawn(rect, "Spawn");
-vector<Quad> confetti;
+Game game;
+Confetti confetti;
 
-void spawnConfetti() {
-    confetti.push_back(Quad({rand() % 10 / 10.0, rand() % 10 / 10.0, rand() % 10 / 10.0}, {rand() % (int)width, rand() % (int)height}, 10, 10));
+enum state {start, play, end};
+state programState;
+
+// go to start screen
+void setProgramStateStart() {
+    programState = state::start;
+    //game.restartGame();
 }
 
 void init() {
@@ -46,13 +53,29 @@ void display() {
     /*
      * Draw here
      */
-    spawn.draw();
-
-    for (Quad &piece : confetti) {
-        piece.draw();
+    switch(programState) {
+        case state::start: {
+            game.drawStart();
+            break;
+        }
+        case state::play: {
+            game.drawGame();
+// if we reach max score, go to end screen
+            //if (game.isOver()) {
+            //    programState = state::end;
+            //}
+            break;
+        }
+        case state::end: {
+            game.drawEnd();
+            //if (game.userWon()) {
+            //    confetti.draw();
+            //}
+            break;
+        }
     }
-    
     glFlush();  // Render now
+    timer(0); // start timer to redraw
 }
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
@@ -101,16 +124,18 @@ void cursor(int x, int y) {
 void mouse(int button, int state, int x, int y) {
     if (state == GLUT_DOWN &&
         button == GLUT_LEFT_BUTTON &&
-        spawn.isOverlapping(x, y)) {
-        spawn.pressDown();
+        //spawn.isOverlapping(x, y))
+        {
+        //spawn.pressDown();
     } else {
-        spawn.release();
+        //spawn.release();
     }
 
     if (state == GLUT_UP &&
         button == GLUT_LEFT_BUTTON &&
-        spawn.isOverlapping(x, y)) {
-        spawn.click(spawnConfetti);
+        //spawn.isOverlapping(x, y))
+        {
+        //spawn.click(spawnConfetti);
     }
     
     glutPostRedisplay();

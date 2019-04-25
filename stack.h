@@ -6,7 +6,7 @@
 #define INC_3D_GRAPHICS_STACK_H
 
 
-class stack {
+class Stack {
 
 };
 

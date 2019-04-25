@@ -6,7 +6,7 @@
 #define INC_3D_GRAPHICS_DISK_H
 
 
-class disk {
+class Disk {
 
 };
 

@@ -5,9 +5,17 @@
 #ifndef INC_3D_GRAPHICS_GAME_H
 #define INC_3D_GRAPHICS_GAME_H
 
+using namespace std;
+#include <string>
+#include "graphics.h"
 
-class game {
+class Game {
+public:
+    void drawStart();
+    void drawGame();
+    void drawEnd();
 
+    void drawString(string label, int x, int y);
 };
 
 
