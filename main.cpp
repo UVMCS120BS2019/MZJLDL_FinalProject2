@@ -1,5 +1,5 @@
 #include "graphics.h"
-#include "Button.h"
+#include "button.h"
 #include <iostream>
 #include "confetti.h"
 #include "game.h"
@@ -86,7 +86,17 @@ void kbd(unsigned char key, int x, int y)
         glutDestroyWindow(wd);
         exit(0);
     }
-    
+     // uses 'a' to manually switch between screens
+     else if (key == 97) {
+     	if (programState == state::start) {
+     		programState = state::play;
+     	} else if (programState == state::play) {
+     		programState = state::end;
+     	} else {
+     		programState = state::start;
+     	}
+     }
+
     glutPostRedisplay();
 }
 
@@ -110,11 +120,11 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    if (spawn.isOverlapping(x, y)) {
-        spawn.hover();
-    } else {
-        spawn.release();
-    }
+//    if (spawn.isOverlapping(x, y)) {
+//        spawn.hover();
+//    } else {
+//        spawn.release();
+//    }
     
     glutPostRedisplay();
 }
@@ -122,21 +132,20 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-    if (state == GLUT_DOWN &&
-        button == GLUT_LEFT_BUTTON &&
-        //spawn.isOverlapping(x, y))
-        {
-        //spawn.pressDown();
-    } else {
-        //spawn.release();
-    }
-
-    if (state == GLUT_UP &&
-        button == GLUT_LEFT_BUTTON &&
-        //spawn.isOverlapping(x, y))
-        {
-        //spawn.click(spawnConfetti);
-    }
+//    if (state == GLUT_DOWN &&
+//        button == GLUT_LEFT_BUTTON &&
+//        button.isOverlapping(x, y)) {
+//            button.pressDown();
+//    } else {
+//        //spawn.release();
+//    }
+//
+//    if (state == GLUT_UP &&
+//        button == GLUT_LEFT_BUTTON &&
+//        //spawn.isOverlapping(x, y))
+//        {
+//        //spawn.click(spawnConfetti);
+//    }
     
     glutPostRedisplay();
 }
