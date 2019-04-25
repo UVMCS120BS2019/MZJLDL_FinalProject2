@@ -5,14 +5,16 @@
 #include "game.h"
 
 void Game::drawStart() {
-
+    drawString("This is the Start Screen", 200, 150);
 }
 
 void Game::drawGame() {
+    drawString("This is the Game Screen", 200, 150);
 
 }
 
 void Game::drawEnd() {
+    drawString("This is the End Screen", 200, 150);
 
 }
 

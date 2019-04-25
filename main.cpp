@@ -9,7 +9,6 @@ using namespace std;
 
 GLdouble width, height;
 int wd;
-Quad rect({1, 0, 0}, {100, 100}, 100, 50);
 Game game;
 Confetti confetti;
 
@@ -23,7 +22,7 @@ void setProgramStateStart() {
 }
 
 void init() {
-    width = 500;
+    width = 800;
     height = 500;
     srand(time(0));
 }
