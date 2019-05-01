@@ -5,12 +5,29 @@
 #include "game.h"
 #include <vector>
 #include <time.h>
+#include "disk.h"
+#include "stack.h"
+
 using namespace std;
 
 GLdouble width, height;
 int wd;
 Game game;
 Confetti confetti;
+vector<Stack*> stacks;
+static Stack stack1(1);
+static Stack stack2(2);
+static Stack stack3(3);
+
+vector<Disk*> allDisks;
+static Disk disk1(50, 0, 0,0);
+static Disk disk2(40, 1, 0,0);
+static Disk disk3(30, 2, 0,0);
+
+bool ringSelected = false;
+Stack* previousStack = nullptr;
+point returnPos;
+
 
 enum state {start, play, end};
 state programState;
@@ -25,6 +42,17 @@ void init() {
     width = 800;
     height = 500;
     srand(time(0));
+    stack1.addDisk(&disk1);
+    stack1.addDisk(&disk2);
+    stack1.addDisk(&disk3);
+    stacks.push_back(&stack1);
+    stacks.push_back(&stack2);
+    stacks.push_back(&stack3);
+
+    allDisks.push_back(&disk1);
+    allDisks.push_back(&disk2);
+    allDisks.push_back(&disk3);
+
 }
 
 /* Initialize OpenGL Graphics */
@@ -55,10 +83,17 @@ void display() {
     switch(programState) {
         case state::start: {
             game.drawStart();
+
             break;
         }
         case state::play: {
             game.drawGame();
+            for (int j = 0; j < allDisks.size(); ++j) {
+                allDisks[j]->selectable = true;
+            }
+            for (int i = 0; i < stacks.size(); ++i) {
+                stacks[i]->draw();
+            }
 // if we reach max score, go to end screen
             //if (game.isOver()) {
             //    programState = state::end;
@@ -67,6 +102,10 @@ void display() {
         }
         case state::end: {
             game.drawEnd();
+            for (int j = 0; j < allDisks.size(); ++j) {
+                allDisks[j]->selectable = false;
+            }
+
             //if (game.userWon()) {
             //    confetti.draw();
             //}
@@ -119,6 +158,20 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
+    double dX, dY;
+    dX = (double)x;
+    dY = (double)y;
+    Disk debug1, debug2, debug3;
+    debug1 = disk1;
+    debug2 = disk2;
+    debug3 = disk3;
+    for (int i = 0; i < allDisks.size(); ++i) {
+        if (allDisks[i]->selected){
+            allDisks[i]->center = {dX,dY};
+            allDisks[i]->draw();
+            break;
+        }
+    }
 //    if (spawn.isOverlapping(x, y)) {
 //        spawn.hover();
 //    } else {
@@ -131,6 +184,42 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+        if (ringSelected){
+            for (int i = 0; i < allDisks.size(); ++i) {
+                if (allDisks[i]->selected){
+                    for (int j = 0; j < stacks.size(); ++j) {
+                        if (stacks[j]->isOverlapping(x)){
+                            if (stacks[j]->placeDisk(allDisks[i])) {
+                                ringSelected = false;
+                                previousStack->removeDisk();
+                                previousStack = nullptr;
+                                break;
+                            } else {
+                                allDisks[i]->center = returnPos;
+                                allDisks[i]->selected = false;
+                                previousStack = nullptr;
+                                ringSelected = false;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            Disk *debug1, *debug2, *debug3;
+            debug1 = &disk1;
+            debug2 = &disk2;
+            debug3 = &disk3;
+            for (int i = 0; i < stacks.size(); ++i) {
+                if (stacks[i]->isOverlapping(x, y)) {
+                    returnPos = stacks[i]->topDisk->center;
+                    ringSelected = true;
+                    previousStack = stacks[i];
+                    break;
+                }
+            }
+        }
+    }
 //    if (state == GLUT_DOWN &&
 //        button == GLUT_LEFT_BUTTON &&
 //        button.isOverlapping(x, y)) {
@@ -167,7 +256,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize((int)width, (int)height);
     glutInitWindowPosition(100, 200); // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    wd = glutCreateWindow("Fun with Drawing!" /* title */ );
+    wd = glutCreateWindow("Tower of Hanoi!" /* title */ );
     
     // Register callback handler for window re-paint event
     glutDisplayFunc(display);
