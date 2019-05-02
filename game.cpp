@@ -17,7 +17,7 @@ void Game::drawGame() {
 }
 
 void Game::drawEnd() {
-    drawString("This is the End Screen", 200, 150);
+    drawString("Congratulations! You Won!", 250, 150);
 }
 
 void Game::displayMoves(int counter) {
@@ -26,27 +26,23 @@ void Game::displayMoves(int counter) {
 }
 
 void Game::drawMoves(string message, string moves){
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glRasterPos2i(225, 30);
     // draw each part of message
     for (char &letter : message) {
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, letter);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, letter);
     }
     for (char &letter : moves) {
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, letter);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, letter);
     }
-}
-
-void Game::restartGame() {
-
 }
 
 // Function to draw strings
 void Game::drawString(string label, int x, int y) {
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
     glRasterPos2i(x, y);
     for (char &letter : label)  {
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, letter);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, letter);
     }
     glEnd();
 }

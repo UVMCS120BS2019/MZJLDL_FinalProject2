@@ -31,7 +31,6 @@ public:
 
     void displayMoves(int counter);
     void drawMoves(string message, string moves);
-    void restartGame();
 
     void drawString(string label, int x, int y);
 

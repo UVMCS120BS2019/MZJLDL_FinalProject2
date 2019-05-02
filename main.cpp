@@ -41,12 +41,6 @@ state programState;
 void setProgramStateStart() {
     programState = state::start;
     counter = 0;
-    game.restartGame();
-}
-
-// go to game screen
-void setProgramStateGame() {
-    programState = state::play;
 }
 
 void init() {
