@@ -22,6 +22,10 @@ static Stack stack1(1);
 static Stack stack2(2);
 static Stack stack3(3);
 
+static Stack stack1a(1);
+static Stack stack2a(2);
+static Stack stack3a(3);
+
 vector<Disk*> allDisks;
 static Disk disk1(50, 0, 0,0);
 static Disk disk2(40, 1, 0,0);
@@ -87,8 +91,11 @@ void display() {
      */
     switch(programState) {
         case state::start: {
+            init();
+            stack1a.draw();
+            stack2a.draw();
+            stack3a.draw();
             game.drawStart();
-
             break;
         }
         case state::play: {
@@ -112,6 +119,10 @@ void display() {
             replay.draw();
             glFlush();
 
+
+            //if (game.userWon()) {
+            //    confetti.draw();
+            //}
             break;
         }
     }
@@ -181,6 +192,12 @@ void cursor(int x, int y) {
             break;
         }
     }
+
+    if (replay.isOverlapping(x, y)) {
+        replay.hover();
+    } else {
+        replay.release();
+    }
     glutPostRedisplay();
 }
 
@@ -190,7 +207,9 @@ void mouse(int button, int state, int x, int y) {
     if(programState == state::end){
         if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
             replay.pressDown();
-        } else {
+        } else if(replay.isOverlapping(x, y)) {
+            replay.hover();
+        } else{
             replay.release();
         }
 
