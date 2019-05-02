@@ -20,12 +20,14 @@ bool Stack::addDisk(Disk *toAdd) {
         toAdd->center.y = this->base.y - 15;
         myDisks.push_back(toAdd);
         this->topDisk = toAdd;
+        topDiskIndex += 1;
         return true;
     } else if (toAdd->size < myDisks[topDiskIndex]->size){
         toAdd->center.x = this->base.x;
         toAdd->center.y = this->myDisks[topDiskIndex]->center.y - 20;
         myDisks.push_back(toAdd);
         this->topDisk = toAdd;
+        topDiskIndex += 1;
         return true;
     }
     return false;
@@ -34,6 +36,7 @@ bool Stack::addDisk(Disk *toAdd) {
 void Stack::removeDisk() {
     try {
         myDisks.pop_back();
+        topDiskIndex = (int)myDisks.size() - 1;
         if (myDisks.size() != 0){
             topDisk = myDisks[topDiskIndex];
         } else {

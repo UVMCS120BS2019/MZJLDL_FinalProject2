@@ -88,12 +88,13 @@ void display() {
         }
         case state::play: {
             game.drawGame();
-            for (int j = 0; j < allDisks.size(); ++j) {
-                allDisks[j]->selectable = true;
-            }
             for (int i = 0; i < stacks.size(); ++i) {
                 stacks[i]->draw();
             }
+            for (int j = 0; j < allDisks.size(); ++j) {
+                allDisks[j]->selectable = true;
+            }
+
 // if we reach max score, go to end screen
             //if (game.isOver()) {
             //    programState = state::end;
@@ -200,6 +201,7 @@ void mouse(int button, int state, int x, int y) {
                                 allDisks[i]->selected = false;
                                 previousStack = nullptr;
                                 ringSelected = false;
+                                break;
                             }
                         }
                     }
