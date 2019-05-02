@@ -36,6 +36,7 @@ Stack* previousStack = nullptr;
 point returnPos;
 
 Button replay(Quad({1,.5,.5},{400,250},100,100),"Replay");
+Button restart(Quad({1,.3,.3},{400,30},75,50),"Restart");
 
 
 enum state {start, play, end};
@@ -44,6 +45,11 @@ state programState;
 // go to start screen
 void setProgramStateStart() {
     programState = state::start;
+    counter = 0;
+}
+
+void setProgramStateGame() {
+    init();
     counter = 0;
 }
 
@@ -108,6 +114,7 @@ void display() {
                 stacks[i]->draw();
             }
             game.displayMoves(counter);
+            restart.draw();
             break;
         }
         case state::end: {
@@ -198,6 +205,11 @@ void cursor(int x, int y) {
     } else {
         replay.release();
     }
+    if (restart.isOverlapping(x, y)) {
+        restart.hover();
+    } else {
+        restart.release();
+    }
     
     glutPostRedisplay();
 }
@@ -216,6 +228,20 @@ void mouse(int button, int state, int x, int y) {
 
         if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
             replay.click(setProgramStateStart);
+        }
+    }
+
+    if(programState == state::play){
+        if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
+            restart.pressDown();
+        } else if(replay.isOverlapping(x, y)) {
+            restart.hover();
+        } else{
+            restart.release();
+        }
+
+        if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
+            restart.click(setProgramStateGame);
         }
     }
 

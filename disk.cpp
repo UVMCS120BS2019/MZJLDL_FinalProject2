@@ -17,7 +17,7 @@ Disk::Disk(int size, int id, double x, double y) {
 }
 
 void Disk::draw() {
-    glColor3f(myColor.red, myColor.blue, myColor.green);
+    glColor3f(myColor.red, myColor.green, myColor.blue);
     glBegin(GL_QUADS);
     glVertex2d(this->center.x + this->size, this->center.y + 10);
     glVertex2d(this->center.x + this->size, this->center.y - 10);
