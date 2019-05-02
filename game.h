@@ -17,15 +17,14 @@ using namespace std;
 
 class Game {
 private:
-    Button playAgainButton;
-    //Confetti confetti;
     Quad box;
-    int width;
-    int height;
+    Button playAgainButton;
+
 public:
+    const static int width = 800;
+    const static int height = 500;
     Game();
-    //static int width;
-    //static int height;
+
     void drawStart();
     void drawGame();
     void drawEnd();

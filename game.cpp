@@ -3,7 +3,7 @@
 //
 
 #include "game.h"
-#include "confetti.h"
+
 Game::Game() : box({1, 0, 0}, {350, 220}, 200, 50),
                 playAgainButton(box, "Play Again?") {
 
@@ -55,5 +55,6 @@ void Game::playAgainButtonPressDown() {
 }
 
 void Game::playAgainButtonClick() {
-    //playAgainButton.click(setProgramStateStart);
+   // playAgainButton.click(setProgramStateStart);
 }
+

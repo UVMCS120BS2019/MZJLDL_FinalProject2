@@ -13,6 +13,7 @@ using namespace std;
 
 GLdouble width, height;
 int wd;
+int lastTick;
 Game game;
 Confetti confetti;
 vector<Stack*> stacks;
@@ -45,8 +46,8 @@ void setProgramStateGame() {
 }
 
 void init() {
-    width = 800;
-    height = 500;
+    width = Game::width;
+    height = Game::height;
     srand(time(0));
     stack1.addDisk(&disk1);
     stack1.addDisk(&disk2);
@@ -100,10 +101,6 @@ void display() {
             for (int i = 0; i < stacks.size(); ++i) {
                 stacks[i]->draw();
             }
-// if we reach max score, go to end screen
-            //if (game.isOver()) {
-            //    programState = state::end;
-            //}
             break;
         }
         case state::end: {
@@ -111,10 +108,7 @@ void display() {
             for (int j = 0; j < allDisks.size(); ++j) {
                 allDisks[j]->selectable = false;
             }
-
-            //if (game.userWon()) {
-            //    confetti.draw();
-            //}
+            confetti.draw();
             break;
         }
     }
@@ -140,6 +134,12 @@ void kbd(unsigned char key, int x, int y)
      		programState = state::start;
      	}
      }
+     // Hit Enter at the start screen to begin the game
+    if (programState == state::start) {
+        if (key == 13) {
+            programState = state::play;
+        }
+    }
 
     glutPostRedisplay();
 }
@@ -147,16 +147,16 @@ void kbd(unsigned char key, int x, int y)
 void kbdS(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_DOWN:
-            
+
             break;
         case GLUT_KEY_LEFT:
-            
+
             break;
         case GLUT_KEY_RIGHT:
-            
+
             break;
         case GLUT_KEY_UP:
-            
+
             break;
     }
     
@@ -178,11 +178,11 @@ void cursor(int x, int y) {
             break;
         }
     }
-//    if (spawn.isOverlapping(x, y)) {
-//        spawn.hover();
-//    } else {
-//        spawn.release();
-//    }
+    if (game.getPlayAgainButton().isOverlapping(x, y)) {
+        game.playAgainButtonHover();
+    } else {
+        game.playAgainButtonRelease();
+    }
     
     glutPostRedisplay();
 }
@@ -226,26 +226,43 @@ void mouse(int button, int state, int x, int y) {
             }
         }
     }
-//    if (state == GLUT_DOWN &&
-//        button == GLUT_LEFT_BUTTON &&
-//        button.isOverlapping(x, y)) {
-//            button.pressDown();
-//    } else {
-//        //spawn.release();
-//    }
-//
-//    if (state == GLUT_UP &&
-//        button == GLUT_LEFT_BUTTON &&
-//        //spawn.isOverlapping(x, y))
-//        {
-//        //spawn.click(spawnConfetti);
-//    }
-    
+
+    // play again button
+    if (programState == state::end) {
+        if (state == GLUT_DOWN &&
+            button == GLUT_LEFT_BUTTON &&
+            game.getPlayAgainButton().isOverlapping(x, y)) {
+            game.playAgainButtonPressDown();
+        } else {
+            game.playAgainButtonRelease();
+        }
+
+        if (state == GLUT_UP &&
+            button == GLUT_LEFT_BUTTON &&
+            game.getPlayAgainButton().isOverlapping(x, y)) {
+            game.playAgainButtonClick();
+        }
+    }
+
     glutPostRedisplay();
 }
 
 void timer(int dummy) {
-    
+    int tick = glutGet(GLUT_ELAPSED_TIME);
+
+    // if it's not time to move everything, then don't do anything
+    if (tick < lastTick) {
+        return;
+    }
+    // while we're "behind" tick until we're ahead again
+    while (tick > lastTick) {
+        if (programState == state::end) {
+            confetti.timestep();
+        }
+        // target 45 fps, and wait for us to get there
+        lastTick += 1000 / 45;
+    }
+
     glutPostRedisplay();
     glutTimerFunc(30, timer, dummy);
 }
