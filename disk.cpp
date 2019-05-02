@@ -10,7 +10,7 @@ Disk::Disk(){}
 Disk::Disk(int size, int id, double x, double y) {
     center.x = x;
     center.y = y;
-    myColor = {.75, .75, .75};
+    myColor = {.2*(rand()%10),.2*(rand()%10), .2*(rand()%10)};
 
     this->size = size;
     this->ID = id;

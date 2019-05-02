@@ -179,9 +179,9 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    double dX, dY;
-    dX = (double)x;
-    dY = (double)y;
+    int dX, dY;
+    dX = (int)x;
+    dY = (int)y;
     Disk debug1, debug2, debug3;
     debug1 = disk1;
     debug2 = disk2;
@@ -193,11 +193,11 @@ void cursor(int x, int y) {
             break;
         }
     }
-//    if (spawn.isOverlapping(x, y)) {
-//        spawn.hover();
-//    } else {
-//        spawn.release();
-//    }
+    if (replay.isOverlapping(x, y)) {
+        replay.hover();
+    } else {
+        replay.release();
+    }
     
     glutPostRedisplay();
 }
