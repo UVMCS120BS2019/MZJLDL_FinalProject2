@@ -32,7 +32,7 @@ bool Disk::isOverlapping(double x, double y) {
     }
     if (this->selectable) {
         if (y < this->center.y + 10 && y > this->center.y - 10) {
-            if (x < this->center.x + size && x > this->center.y - x) {
+            if (x < this->center.x + size && x > this->center.x - size) {
                 return true;
             }
         }

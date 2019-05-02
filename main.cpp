@@ -179,9 +179,9 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    double dX, dY;
-    dX = (double)x;
-    dY = (double)y;
+    int dX, dY;
+    dX = x;
+    dY = y;
     Disk debug1, debug2, debug3;
     debug1 = disk1;
     debug2 = disk2;
