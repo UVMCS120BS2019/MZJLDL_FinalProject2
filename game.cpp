@@ -12,10 +12,6 @@ void Game::drawStart() {
 
 }
 
-void Game::drawGame() {
-
-}
-
 void Game::drawEnd() {
     drawString("Congratulations! You Won!", 260, 150);
 }

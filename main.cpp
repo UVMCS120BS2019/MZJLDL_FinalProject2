@@ -172,7 +172,6 @@ void display() {
             break;
         }
         case state::play: {
-            game.drawGame();
             for (int j = 0; j < allDisks.size(); ++j) {
                 allDisks[j]->selectable = true;
             }
@@ -211,14 +210,8 @@ void display() {
                 allDisks[j]->selectable = false;
             }
             confetti.draw();
-
             replay.draw();
             glFlush();
-
-
-            //if (game.userWon()) {
-            //    confetti.draw();
-            //}
             break;
         }
     }
@@ -234,44 +227,28 @@ void kbd(unsigned char key, int x, int y)
         glutDestroyWindow(wd);
         exit(0);
     }
-     // uses 'a' to manually switch between screens
-     else if (key == 97) {
-     	if (programState == state::start) {
-     		programState = state::play;
-     	} else if (programState == state::play) {
-     		programState = state::end;
-     	} else {
-     		programState = state::start;
-     	}
-     }
-     // Hit Enter at the start screen to begin the game
+
+    // Hit Enter at the start screen to begin the game
     if (programState == state::start) {
         if (key == 13) {
             programState = state::play;
             startAllDisksFresh();
-
         }
     }
-
     glutPostRedisplay();
 }
 
 void kbdS(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_DOWN:
-            
             break;
         case GLUT_KEY_LEFT:
-            
             break;
         case GLUT_KEY_RIGHT:
-            
             break;
         case GLUT_KEY_UP:
-            
             break;
     }
-    
     glutPostRedisplay();
 }
 
@@ -379,7 +356,6 @@ void mouse(int button, int state, int x, int y) {
             }
         }
     }
-
     glutPostRedisplay();
 }
 
@@ -398,7 +374,6 @@ void timer(int dummy) {
         // target 45 fps, and wait for us to get there
         lastTick += 1000 / 45;
     }
-
     glutPostRedisplay();
     glutTimerFunc(30, timer, dummy);
 }

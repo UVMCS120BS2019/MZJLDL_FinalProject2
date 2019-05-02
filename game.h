@@ -22,7 +22,6 @@ public:
     const static int height = 500;
 
     void drawStart();
-    void drawGame();
     void drawEnd();
 
     void displayMoves(int counter);
@@ -31,6 +30,5 @@ public:
     void drawString(string label, int x, int y);
 
 };
-
 
 #endif //INC_3D_GRAPHICS_GAME_H

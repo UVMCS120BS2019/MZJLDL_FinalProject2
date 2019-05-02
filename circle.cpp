@@ -3,8 +3,6 @@
 //
 
 #include "circle.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 Circle::Circle() : Shape(), radius(0) {}
 

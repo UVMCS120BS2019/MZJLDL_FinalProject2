@@ -13,7 +13,6 @@ private:
     std::string label;
     color originalFill, hoverFill, pressFill;
 
-
 public:
     int numDisks;
     bool clickStatus;

@@ -8,6 +8,8 @@
 #include "shape.h"
 #include <iostream>
 #include "graphics.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 class Circle : public Shape {
 
