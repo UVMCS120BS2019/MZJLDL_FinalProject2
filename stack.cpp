@@ -102,7 +102,7 @@ bool Stack::placeDisk(Disk *toPlace){
 }
 
 bool Stack::isGameOver(int numDisks){
-    if (this->myDisks.size() == numDisks - 1){
+    if (this->myDisks.size() == numDisks){
         return true;
     }
     return false;

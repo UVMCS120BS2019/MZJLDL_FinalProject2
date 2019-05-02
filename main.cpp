@@ -315,6 +315,9 @@ void mouse(int button, int state, int x, int y) {
                                 ringSelected = false;
                                 previousStack->removeDisk();
                                 previousStack = nullptr;
+                                if (stack3.isGameOver(numDisks)){
+                                    programState = state::end;
+                                }
                                 break;
                             } else {
                                 allDisks[i]->center = returnPos;
