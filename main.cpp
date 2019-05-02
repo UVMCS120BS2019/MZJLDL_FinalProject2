@@ -16,7 +16,7 @@ int wd;
 int lastTick;
 Game game;
 int counter = 0;
-int numDisks = 3;
+int numDisks = 7;
 Confetti confetti;
 vector<Stack*> stacks;
 static Stack stack1(1);
@@ -60,6 +60,37 @@ void setProgramStateStart() {
 void setProgramStateGame() {
     init();
     counter = 0;
+}
+
+void startAllDisksFresh(){
+    allDisks.clear();
+    stack1.clear();
+    stack2.clear();
+    stack3.clear();
+    switch (numDisks){
+        case 8:
+            stack1.addDisk(&disk1);
+            allDisks.push_back(&disk1);
+        case 7:
+            stack1.addDisk(&disk2);
+            allDisks.push_back(&disk2);
+        case 6:
+            stack1.addDisk(&disk3);
+            allDisks.push_back(&disk3);
+        case 5:
+            stack1.addDisk(&disk4);
+            allDisks.push_back(&disk4);
+        case 4:
+            stack1.addDisk(&disk5);
+            allDisks.push_back(&disk5);
+        case 3:
+            stack1.addDisk(&disk6);
+            allDisks.push_back(&disk6);
+            stack1.addDisk(&disk7);
+            allDisks.push_back(&disk7);
+            stack1.addDisk(&disk8);
+            allDisks.push_back(&disk8);
+    }
 }
 
 void init() {
@@ -164,30 +195,7 @@ void kbd(unsigned char key, int x, int y)
     if (programState == state::start) {
         if (key == 13) {
             programState = state::play;
-            switch (numDisks){
-                case 8:
-                    stack1.addDisk(&disk1);
-                    allDisks.push_back(&disk1);
-                case 7:
-                    stack1.addDisk(&disk2);
-                    allDisks.push_back(&disk2);
-                case 6:
-                    stack1.addDisk(&disk3);
-                    allDisks.push_back(&disk3);
-                case 5:
-                    stack1.addDisk(&disk4);
-                    allDisks.push_back(&disk4);
-                case 4:
-                    stack1.addDisk(&disk5);
-                    allDisks.push_back(&disk5);
-                case 3:
-                    stack1.addDisk(&disk6);
-                    allDisks.push_back(&disk6);
-                    stack1.addDisk(&disk7);
-                    allDisks.push_back(&disk7);
-                    stack1.addDisk(&disk8);
-                    allDisks.push_back(&disk8);
-            }
+            startAllDisksFresh();
 
         }
     }
@@ -263,6 +271,7 @@ void mouse(int button, int state, int x, int y) {
     if(programState == state::play){
         if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
             restart.pressDown();
+            startAllDisksFresh();
         } else if(replay.isOverlapping(x, y)) {
             restart.hover();
         } else{

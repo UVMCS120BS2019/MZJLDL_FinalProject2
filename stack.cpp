@@ -107,3 +107,9 @@ bool Stack::isGameOver(int numDisks){
     }
     return false;
 }
+
+void Stack::clear(){
+    this->myDisks.clear();
+    this->topDisk = NULL;
+
+}

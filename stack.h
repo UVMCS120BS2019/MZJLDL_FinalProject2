@@ -35,6 +35,8 @@ public:
 
     bool isGameOver(int numDisks);
 
+    void clear();
+
 };
 
 
