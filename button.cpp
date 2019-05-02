@@ -10,6 +10,14 @@ Button::Button(Quad box, string label) {
     hoverFill = {box.getRed()+0.5, box.getGreen()+0.5, box.getBlue()+0.5};
     pressFill = {box.getRed()-0.5, box.getGreen()-0.5, box.getBlue()-0.5};
 }
+Button::Button(Quad box, std::string label,int numDisks){
+    this->box = box;
+    this->label = label;
+    originalFill = box.getFill();
+    hoverFill = {box.getRed()+0.5, box.getGreen()+0.5, box.getBlue()+0.5};
+    pressFill = {box.getRed()-0.5, box.getGreen()-0.5, box.getBlue()-0.5};
+    this->numDisks = numDisks;
+}
 
 void Button::draw() {
     box.draw();
@@ -43,8 +51,4 @@ void Button::release() {
 /* Execute whatever the Button is supposed to do */
 void Button::click(function<void()> callback) {
     callback();
-}
-
-void Button::move(int x, int y) {
-    box.move(x, y);
 }

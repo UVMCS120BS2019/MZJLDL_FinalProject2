@@ -14,7 +14,9 @@ private:
     color originalFill, hoverFill, pressFill;
 
 public:
+    int numDisks;
     Button(Quad box, std::string label);
+    Button(Quad box, std::string label,int numDisks);
     /* Uses OpenGL to draw the box with the label on top */
     virtual void draw();
 
@@ -32,9 +34,6 @@ public:
 
     /* Execute whatever the Button is supposed to do */
     virtual void click(std::function<void()> callback);
-
-    // move the button's position
-    void move(int x, int y);
 };
 
 

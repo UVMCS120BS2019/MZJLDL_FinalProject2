@@ -58,6 +58,7 @@ std::ostream& Quad::doprint(std::ostream& out) const {
     return out;
 }
 
+
 // setters
 
 void Quad::setColor(double red, double green, double blue) {

@@ -65,7 +65,6 @@ public:
     // other functions
     void draw() const override;
     std::ostream& doprint(std::ostream& out) const override;
-
 };
 
 

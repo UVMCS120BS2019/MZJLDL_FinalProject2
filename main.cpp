@@ -44,9 +44,16 @@ bool ringSelected = false;
 Stack* previousStack = nullptr;
 point returnPos;
 
+vector<Button> buttons;
+
 Button replay(Quad({1,.5,.5},{400,250},100,100),"Replay");
 Button restart(Quad({1,.3,.3},{400,30},75,50),"Restart");
-
+Button three(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{150,150},75,50),"3",3);
+Button four(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{250,150},75,50),"4",4);
+Button five(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{350,150},75,50),"5",5);
+Button six(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{450,150},75,50),"6",6);
+Button seven(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{550,150},75,50),"7",7);
+Button eight(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{650,150},75,50),"8",8);
 
 enum state {start, play, end};
 state programState;
@@ -55,6 +62,10 @@ state programState;
 void setProgramStateStart() {
     programState = state::start;
     counter = 0;
+}
+
+void setNumDisks(int disks) {
+    numDisks = disks;
 }
 
 void setProgramStateGame() {
@@ -106,6 +117,15 @@ void init() {
     stacks.push_back(&stack3);
 
 
+    buttons.push_back(replay);
+    buttons.push_back(restart);
+    buttons.push_back(three);
+    buttons.push_back(four);
+    buttons.push_back(five);
+    buttons.push_back(six);
+    buttons.push_back(seven);
+    buttons.push_back(eight);
+
 }
 
 /* Initialize OpenGL Graphics */
@@ -139,6 +159,14 @@ void display() {
             stack1a.draw();
             stack2a.draw();
             stack3a.draw();
+
+            three.draw();
+            four.draw();
+            five.draw();
+            six.draw();
+            seven.draw();
+            eight.draw();
+
             game.drawStart();
 
             break;
@@ -258,15 +286,14 @@ void cursor(int x, int y) {
             break;
         }
     }
-    if (replay.isOverlapping(x, y)) {
-        replay.hover();
-    } else {
-        replay.release();
-    }
-    if (restart.isOverlapping(x, y)) {
-        restart.hover();
-    } else {
-        restart.release();
+
+    for(int i = 0; i < buttons.size(); i++){
+        if(buttons[i].isOverlapping(x, y)){
+            buttons[i].hover();
+        }
+        else{
+            buttons[i].release();
+        }
     }
     
     glutPostRedisplay();
@@ -275,17 +302,16 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-    if(programState == state::end){
-        if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
-            replay.pressDown();
-        } else if(replay.isOverlapping(x, y)) {
-            replay.hover();
-        } else{
-            replay.release();
-        }
-
-        if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
-            replay.click(setProgramStateStart);
+    if(programState == state::start) {
+        for (Button b: buttons) {
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && b.isOverlapping(x, y)) {
+                b.pressDown();
+                numDisks = b.numDisks;
+                b.hover();
+            }
+            else{
+                b.release();
+            }
         }
     }
 
@@ -293,14 +319,25 @@ void mouse(int button, int state, int x, int y) {
         if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
             restart.pressDown();
             startAllDisksFresh();
-        } else if(replay.isOverlapping(x, y)) {
-            restart.hover();
-        } else{
+
+        }else {
             restart.release();
         }
 
         if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
             restart.click(setProgramStateGame);
+        }
+    }
+
+    if(programState == state::end){
+        if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.pressDown();
+        }else{
+            replay.release();
+        }
+
+        if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.click(setProgramStateStart);
         }
     }
 
