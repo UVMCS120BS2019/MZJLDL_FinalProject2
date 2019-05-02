@@ -16,6 +16,7 @@ int wd;
 int lastTick;
 Game game;
 int counter = 0;
+int numDisks = 3;
 Confetti confetti;
 vector<Stack*> stacks;
 static Stack stack1(1);
@@ -27,9 +28,17 @@ static Stack stack2a(2);
 static Stack stack3a(3);
 
 vector<Disk*> allDisks;
-static Disk disk1(50, 0, 0,0);
-static Disk disk2(40, 1, 0,0);
-static Disk disk3(30, 2, 0,0);
+static Disk disk1(80, 0, 0,0);
+static Disk disk2(70, 1, 0,0);
+static Disk disk3(60, 2, 0,0);
+static Disk disk4(50, 3, 0,0);
+static Disk disk5(40, 4, 0,0);
+static Disk disk6(30, 5, 0,0);
+static Disk disk7(20, 6, 0,0);
+static Disk disk8(10, 7, 0,0);
+
+
+
 
 bool ringSelected = false;
 Stack* previousStack = nullptr;
@@ -51,16 +60,11 @@ void init() {
     width = Game::width;
     height = Game::height;
     srand(time(0));
-    stack1.addDisk(&disk1);
-    stack1.addDisk(&disk2);
-    stack1.addDisk(&disk3);
+
     stacks.push_back(&stack1);
     stacks.push_back(&stack2);
     stacks.push_back(&stack3);
 
-    allDisks.push_back(&disk1);
-    allDisks.push_back(&disk2);
-    allDisks.push_back(&disk3);
 
 }
 
@@ -153,6 +157,31 @@ void kbd(unsigned char key, int x, int y)
     if (programState == state::start) {
         if (key == 13) {
             programState = state::play;
+            switch (numDisks){
+                case 8:
+                    stack1.addDisk(&disk1);
+                    allDisks.push_back(&disk1);
+                case 7:
+                    stack1.addDisk(&disk2);
+                    allDisks.push_back(&disk2);
+                case 6:
+                    stack1.addDisk(&disk3);
+                    allDisks.push_back(&disk3);
+                case 5:
+                    stack1.addDisk(&disk4);
+                    allDisks.push_back(&disk4);
+                case 4:
+                    stack1.addDisk(&disk5);
+                    allDisks.push_back(&disk5);
+                case 3:
+                    stack1.addDisk(&disk6);
+                    allDisks.push_back(&disk6);
+                    stack1.addDisk(&disk7);
+                    allDisks.push_back(&disk7);
+                    stack1.addDisk(&disk8);
+                    allDisks.push_back(&disk8);
+            }
+
         }
     }
 

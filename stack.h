@@ -33,6 +33,8 @@ public:
 
     void draw();
 
+    bool isGameOver(int numDisks);
+
 };
 
 
