@@ -20,9 +20,12 @@ private:
     Button playAgainButton;
     //Confetti confetti;
     Quad box;
+    int width;
+    int height;
 public:
-    static int width;
-    static int height;
+    Game();
+    //static int width;
+    //static int height;
     void drawStart();
     void drawGame();
     void drawEnd();

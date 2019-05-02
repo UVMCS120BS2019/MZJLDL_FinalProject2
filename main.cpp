@@ -164,16 +164,16 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-    double dX, dY;
-    dX = (double)x;
-    dY = (double)y;
+    //double dX, dY;
+    //dX = (double)x;
+    //dY = (double)y;
     Disk debug1, debug2, debug3;
     debug1 = disk1;
     debug2 = disk2;
     debug3 = disk3;
     for (int i = 0; i < allDisks.size(); ++i) {
         if (allDisks[i]->selected){
-            allDisks[i]->center = {dX,dY};
+            allDisks[i]->center = {x,y};
             allDisks[i]->draw();
             break;
         }

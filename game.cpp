@@ -55,5 +55,5 @@ void Game::playAgainButtonPressDown() {
 }
 
 void Game::playAgainButtonClick() {
-    playAgainButton.click(setProgramStateStart);
+    //playAgainButton.click(setProgramStateStart);
 }
