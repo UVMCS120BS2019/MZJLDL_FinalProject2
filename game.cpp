@@ -38,7 +38,7 @@ void Game::drawMoves(string message, string moves){
 }
 
 void Game::restartGame() {
-    
+
 }
 
 // Function to draw strings
