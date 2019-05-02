@@ -15,6 +15,7 @@ GLdouble width, height;
 int wd;
 int lastTick;
 Game game;
+int counter = 0;
 Confetti confetti;
 vector<Stack*> stacks;
 static Stack stack1(1);
@@ -39,7 +40,8 @@ state programState;
 // go to start screen
 void setProgramStateStart() {
     programState = state::start;
-    //game.restartGame();
+    counter = 0;
+    game.restartGame();
 }
 
 // go to game screen
@@ -103,10 +105,7 @@ void display() {
             for (int i = 0; i < stacks.size(); ++i) {
                 stacks[i]->draw();
             }
-// if we reach max score, go to end screen
-            //if (game.isOver()) {
-            //    programState = state::end;
-            //}
+            game.displayMoves(counter);
             break;
         }
         case state::end: {
@@ -119,10 +118,6 @@ void display() {
             replay.draw();
             glFlush();
 
-
-            //if (game.userWon()) {
-            //    confetti.draw();
-            //}
             break;
         }
     }
@@ -212,6 +207,7 @@ void mouse(int button, int state, int x, int y) {
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
         if (ringSelected){
+            ++counter;
             for (int i = 0; i < allDisks.size(); ++i) {
                 if (allDisks[i]->selected){
                     for (int j = 0; j < stacks.size(); ++j) {

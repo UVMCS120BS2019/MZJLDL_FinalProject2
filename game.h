@@ -29,6 +29,10 @@ public:
     void drawGame();
     void drawEnd();
 
+    void displayMoves(int counter);
+    void drawMoves(string message, string moves);
+    void restartGame();
+
     void drawString(string label, int x, int y);
 
     // play again button
