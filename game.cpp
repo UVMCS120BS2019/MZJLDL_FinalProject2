@@ -26,7 +26,7 @@ void Game::displayMoves(int counter) {
 
 void Game::drawMoves(string message, string moves){
     glColor3f(1.0f, 1.0f, 1.0f);
-    glRasterPos2i(170, 40);
+    glRasterPos2i(190, 40);
     // draw each part of message
     for (char &letter : message) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, letter);
