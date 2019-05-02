@@ -226,10 +226,6 @@ void cursor(int x, int y) {
     int dX, dY;
     dX = x;
     dY = y;
-    Disk debug1, debug2, debug3;
-    debug1 = disk1;
-    debug2 = disk2;
-    debug3 = disk3;
     for (int i = 0; i < allDisks.size(); ++i) {
         if (allDisks[i]->selected){
             allDisks[i]->center = {dX,dY};
@@ -307,10 +303,6 @@ void mouse(int button, int state, int x, int y) {
                 }
             }
         } else {
-            Disk *debug1, *debug2, *debug3;
-            debug1 = &disk1;
-            debug2 = &disk2;
-            debug3 = &disk3;
             for (int i = 0; i < stacks.size(); ++i) {
                 if (stacks[i]->isOverlapping(x, y)) {
                     returnPos = stacks[i]->topDisk->center;
