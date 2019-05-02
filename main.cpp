@@ -193,11 +193,11 @@ void cursor(int x, int y) {
             break;
         }
     }
-//    if (spawn.isOverlapping(x, y)) {
-//        spawn.hover();
-//    } else {
-//        spawn.release();
-//    }
+    if (replay.isOverlapping(x, y)) {
+        replay.hover();
+    } else {
+        replay.release();
+    }
     
     glutPostRedisplay();
 }
