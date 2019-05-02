@@ -5,6 +5,7 @@
 #include "game.h"
 #include <vector>
 #include <time.h>
+#include "shape.h"
 #include "disk.h"
 #include "stack.h"
 
@@ -12,12 +13,18 @@ using namespace std;
 
 GLdouble width, height;
 int wd;
+int lastTick;
 Game game;
+int counter = 0;
 Confetti confetti;
 vector<Stack*> stacks;
 static Stack stack1(1);
 static Stack stack2(2);
 static Stack stack3(3);
+
+static Stack stack1a(1);
+static Stack stack2a(2);
+static Stack stack3a(3);
 
 vector<Disk*> allDisks;
 static Disk disk1(50, 0, 0,0);
@@ -28,6 +35,8 @@ bool ringSelected = false;
 Stack* previousStack = nullptr;
 point returnPos;
 
+Button replay(Quad({1,.5,.5},{400,250},100,100),"Replay");
+
 
 enum state {start, play, end};
 state programState;
@@ -35,12 +44,12 @@ state programState;
 // go to start screen
 void setProgramStateStart() {
     programState = state::start;
-    //game.restartGame();
+    counter = 0;
 }
 
 void init() {
-    width = 800;
-    height = 500;
+    width = Game::width;
+    height = Game::height;
     srand(time(0));
     stack1.addDisk(&disk1);
     stack1.addDisk(&disk2);
@@ -82,23 +91,23 @@ void display() {
      */
     switch(programState) {
         case state::start: {
+            init();
+            stack1a.draw();
+            stack2a.draw();
+            stack3a.draw();
             game.drawStart();
 
             break;
         }
         case state::play: {
             game.drawGame();
-            for (int i = 0; i < stacks.size(); ++i) {
-                stacks[i]->draw();
-            }
             for (int j = 0; j < allDisks.size(); ++j) {
                 allDisks[j]->selectable = true;
             }
-
-// if we reach max score, go to end screen
-            //if (game.isOver()) {
-            //    programState = state::end;
-            //}
+            for (int i = 0; i < stacks.size(); ++i) {
+                stacks[i]->draw();
+            }
+            game.displayMoves(counter);
             break;
         }
         case state::end: {
@@ -106,6 +115,11 @@ void display() {
             for (int j = 0; j < allDisks.size(); ++j) {
                 allDisks[j]->selectable = false;
             }
+            confetti.draw();
+
+            replay.draw();
+            glFlush();
+
 
             //if (game.userWon()) {
             //    confetti.draw();
@@ -135,6 +149,12 @@ void kbd(unsigned char key, int x, int y)
      		programState = state::start;
      	}
      }
+     // Hit Enter at the start screen to begin the game
+    if (programState == state::start) {
+        if (key == 13) {
+            programState = state::play;
+        }
+    }
 
     glutPostRedisplay();
 }
@@ -185,8 +205,23 @@ void cursor(int x, int y) {
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    if(programState == state::end){
+        if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.pressDown();
+        } else if(replay.isOverlapping(x, y)) {
+            replay.hover();
+        } else{
+            replay.release();
+        }
+
+        if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.click(setProgramStateStart);
+        }
+    }
+
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
         if (ringSelected){
+            ++counter;
             for (int i = 0; i < allDisks.size(); ++i) {
                 if (allDisks[i]->selected){
                     for (int j = 0; j < stacks.size(); ++j) {
@@ -222,26 +257,26 @@ void mouse(int button, int state, int x, int y) {
             }
         }
     }
-//    if (state == GLUT_DOWN &&
-//        button == GLUT_LEFT_BUTTON &&
-//        button.isOverlapping(x, y)) {
-//            button.pressDown();
-//    } else {
-//        //spawn.release();
-//    }
-//
-//    if (state == GLUT_UP &&
-//        button == GLUT_LEFT_BUTTON &&
-//        //spawn.isOverlapping(x, y))
-//        {
-//        //spawn.click(spawnConfetti);
-//    }
-    
+
     glutPostRedisplay();
 }
 
 void timer(int dummy) {
-    
+    int tick = glutGet(GLUT_ELAPSED_TIME);
+
+    // if it's not time to move everything, then don't do anything
+    if (tick < lastTick) {
+        return;
+    }
+    // while we're "behind" tick until we're ahead again
+    while (tick > lastTick) {
+        if (programState == state::end) {
+            confetti.timestep();
+        }
+        // target 45 fps, and wait for us to get there
+        lastTick += 1000 / 45;
+    }
+
     glutPostRedisplay();
     glutTimerFunc(30, timer, dummy);
 }
