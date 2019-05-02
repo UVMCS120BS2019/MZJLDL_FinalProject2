@@ -150,6 +150,28 @@ void display() {
             }
             game.displayMoves(counter);
             restart.draw();
+
+            // Draw minimum moves
+            switch(numDisks) {
+                case 3:
+                    game.drawString("Minimum Moves: 7", 470, 40);
+                    break;
+                case 4:
+                    game.drawString("Minimum Moves: 15", 470, 40);
+                    break;
+                case 5:
+                    game.drawString("Minimum Moves: 31", 470, 40);
+                    break;
+                case 6:
+                    game.drawString("Minimum Moves: 63", 470, 40);
+                    break;
+                case 7:
+                    game.drawString("Minimum Moves: 127", 470, 40);
+                    break;
+                case 8:
+                    game.drawString("Minimum Moves: 255", 470, 40);
+                    break;
+            }
             break;
         }
         case state::end: {
