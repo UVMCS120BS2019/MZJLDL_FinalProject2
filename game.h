@@ -11,6 +11,8 @@ using namespace std;
 
 class Game {
 public:
+    static int width;
+    static int height;
     void drawStart();
     void drawGame();
     void drawEnd();

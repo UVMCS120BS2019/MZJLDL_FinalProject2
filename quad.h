@@ -19,8 +19,8 @@ struct color {
 
 // struct for storing an ordered pair
 struct point {
-    double x;
-    double y;
+    int x;
+    int y;
 };
 
 class Quad : public Shape {
