@@ -24,8 +24,6 @@ Quad::Quad(color fill, point center, unsigned int width, unsigned int height) : 
     this->height = height;
 }
 
-
-
 unsigned int Quad::getWidth() const {
     return width;
 }
@@ -60,9 +58,7 @@ std::ostream& Quad::doprint(std::ostream& out) const {
     return out;
 }
 
-
 // setters
-
 
 void Quad::setColor(double red, double green, double blue) {
     fill = {red, green, blue};
@@ -71,8 +67,6 @@ void Quad::setColor(double red, double green, double blue) {
 void Quad::setColor(color fill) {
     this->fill = fill;
 }
-
-
 
 // getters
 

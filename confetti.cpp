@@ -20,7 +20,7 @@ void Confetti::draw() {
 
 void Confetti::spawnConfetti() {
     // make 50 shapes
-    for (int i = 0; i < 50; ++i) {
+    for (int i = 0; i < 80; ++i) {
         // every fifth shape is a circle
         if (i % 5 == 0) {
             // create circle with random position and color, and add it to vector of shape pointers
