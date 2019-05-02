@@ -13,8 +13,10 @@ private:
     std::string label;
     color originalFill, hoverFill, pressFill;
 
+
 public:
     int numDisks;
+    bool clickStatus;
     Button(Quad box, std::string label);
     Button(Quad box, std::string label,int numDisks);
     /* Uses OpenGL to draw the box with the label on top */

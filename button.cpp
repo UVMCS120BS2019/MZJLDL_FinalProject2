@@ -41,11 +41,17 @@ void Button::hover() {
 /* Change color of the box when the user is clicking on it */
 void Button::pressDown() {
     box.setColor(pressFill);
+    clickStatus = true;
 }
 
 /* Change the color back when the user is not clicking/hovering */
 void Button::release() {
-    box.setColor(originalFill);
+    if(clickStatus){
+        box.setColor({1,1,1});
+    } else{
+        box.setColor(originalFill);
+    }
+
 }
 
 /* Execute whatever the Button is supposed to do */

@@ -37,23 +37,21 @@ static Disk disk6(30, 5, 0,0);
 static Disk disk7(20, 6, 0,0);
 static Disk disk8(10, 7, 0,0);
 
-
-
-
 bool ringSelected = false;
 Stack* previousStack = nullptr;
 point returnPos;
 
-vector<Button> buttons;
+vector<Button*> allButtons;
+vector<Button*> numberButtons;
 
 Button replay(Quad({1,.5,.5},{400,250},100,100),"Replay");
 Button restart(Quad({1,.3,.3},{400,30},75,50),"Restart");
-Button three(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{150,150},75,50),"3",3);
-Button four(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{250,150},75,50),"4",4);
-Button five(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{350,150},75,50),"5",5);
-Button six(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{450,150},75,50),"6",6);
-Button seven(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{550,150},75,50),"7",7);
-Button eight(Quad({.1*(rand()%10),.1*(rand()%10), .2*(rand()%10)},{650,150},75,50),"8",8);
+Button three(Quad({0,1,1},{150,150},75,50),"3",3);
+Button four(Quad({0,1,1},{250,150},75,50),"4",4);
+Button five(Quad({0,1,1},{350,150},75,50),"5",5);
+Button six(Quad({0,1,1},{450,150},75,50),"6",6);
+Button seven(Quad({0,1,1},{550,150},75,50),"7",7);
+Button eight(Quad({0,1,1},{650,150},75,50),"8",8);
 
 enum state {start, play, end};
 state programState;
@@ -62,10 +60,6 @@ state programState;
 void setProgramStateStart() {
     programState = state::start;
     counter = 0;
-}
-
-void setNumDisks(int disks) {
-    numDisks = disks;
 }
 
 void setProgramStateGame() {
@@ -116,15 +110,21 @@ void init() {
     stacks.push_back(&stack2);
     stacks.push_back(&stack3);
 
+    allButtons.push_back(&replay);
+    allButtons.push_back(&restart);
+    allButtons.push_back(&three);
+    allButtons.push_back(&four);
+    allButtons.push_back(&five);
+    allButtons.push_back(&six);
+    allButtons.push_back(&seven);
+    allButtons.push_back(&eight);
 
-    buttons.push_back(replay);
-    buttons.push_back(restart);
-    buttons.push_back(three);
-    buttons.push_back(four);
-    buttons.push_back(five);
-    buttons.push_back(six);
-    buttons.push_back(seven);
-    buttons.push_back(eight);
+    numberButtons.push_back(&three);
+    numberButtons.push_back(&four);
+    numberButtons.push_back(&five);
+    numberButtons.push_back(&six);
+    numberButtons.push_back(&seven);
+    numberButtons.push_back(&eight);
 
 }
 
@@ -287,12 +287,11 @@ void cursor(int x, int y) {
         }
     }
 
-    for(int i = 0; i < buttons.size(); i++){
-        if(buttons[i].isOverlapping(x, y)){
-            buttons[i].hover();
-        }
-        else{
-            buttons[i].release();
+    for(int i = 0; i < allButtons.size(); i++){
+        if (allButtons[i]->isOverlapping(x, y)) {
+            allButtons[i]->hover();
+        } else {
+            allButtons[i]->release();
         }
     }
     
@@ -303,14 +302,14 @@ void cursor(int x, int y) {
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
     if(programState == state::start) {
-        for (Button b: buttons) {
-            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && b.isOverlapping(x, y)) {
-                b.pressDown();
-                numDisks = b.numDisks;
-                b.hover();
-            }
-            else{
-                b.release();
+        for (int i = 0; i < numberButtons.size(); i++) {
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && numberButtons[i]->isOverlapping(x, y)) {
+                numberButtons[i]->pressDown();
+                numDisks = numberButtons[i]->numDisks;
+                for (int j = i+1; j < numberButtons.size(); ++j) {
+                    numberButtons[j]->clickStatus = false;
+                    numberButtons[j]->release();
+                }
             }
         }
     }
@@ -319,11 +318,9 @@ void mouse(int button, int state, int x, int y) {
         if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
             restart.pressDown();
             startAllDisksFresh();
-
         }else {
             restart.release();
         }
-
         if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && restart.isOverlapping(x, y)) {
             restart.click(setProgramStateGame);
         }
@@ -338,6 +335,10 @@ void mouse(int button, int state, int x, int y) {
 
         if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
             replay.click(setProgramStateStart);
+            for (int k = 1; k < numberButtons.size(); ++k) {
+                numberButtons[k]->clickStatus = false;
+                numberButtons[k]->release();
+            }
         }
     }
 
