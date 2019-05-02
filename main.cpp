@@ -5,6 +5,7 @@
 #include "game.h"
 #include <vector>
 #include <time.h>
+#include "shape.h"
 #include "disk.h"
 #include "stack.h"
 
@@ -36,6 +37,11 @@ state programState;
 void setProgramStateStart() {
     programState = state::start;
     //game.restartGame();
+}
+
+// go to game screen
+void setProgramStateGame() {
+    programState = state::play;
 }
 
 void init() {

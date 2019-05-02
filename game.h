@@ -8,8 +8,18 @@
 using namespace std;
 #include <string>
 #include "graphics.h"
+#include "button.h"
+#include "circle.h"
+#include "quad.h"
+#include "button.h"
+#include "confetti.h"
+#include "shape.h"
 
 class Game {
+private:
+    Button playAgainButton;
+    //Confetti confetti;
+    Quad box;
 public:
     static int width;
     static int height;
@@ -18,6 +28,14 @@ public:
     void drawEnd();
 
     void drawString(string label, int x, int y);
+
+    // play again button
+    const Button &getPlayAgainButton() const;
+    void setPlayAgainButton(const Button &button);
+    void playAgainButtonHover();
+    void playAgainButtonRelease();
+    void playAgainButtonPressDown();
+    void playAgainButtonClick();
 };
 
 
