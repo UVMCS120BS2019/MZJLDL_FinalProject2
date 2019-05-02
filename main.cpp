@@ -30,6 +30,8 @@ bool ringSelected = false;
 Stack* previousStack = nullptr;
 point returnPos;
 
+Button replay(Quad({1,.5,.5},{400,250},100,100),"Replay");
+
 
 enum state {start, play, end};
 state programState;
@@ -101,6 +103,10 @@ void display() {
             for (int i = 0; i < stacks.size(); ++i) {
                 stacks[i]->draw();
             }
+// if we reach max score, go to end screen
+            //if (game.isOver()) {
+            //    programState = state::end;
+            //}
             break;
         }
         case state::end: {
@@ -109,6 +115,14 @@ void display() {
                 allDisks[j]->selectable = false;
             }
             confetti.draw();
+
+            replay.draw();
+            glFlush();
+
+
+            //if (game.userWon()) {
+            //    confetti.draw();
+            //}
             break;
         }
     }
@@ -172,24 +186,30 @@ void cursor(int x, int y) {
     debug2 = disk2;
     debug3 = disk3;
     for (int i = 0; i < allDisks.size(); ++i) {
-        if (allDisks[i]->selected){
-            allDisks[i]->center = {x,y};
+        if (allDisks[i]->selected) {
+            allDisks[i]->center = {x, y};
             allDisks[i]->draw();
             break;
         }
     }
-    if (game.getPlayAgainButton().isOverlapping(x, y)) {
-        game.playAgainButtonHover();
-    } else {
-        game.playAgainButtonRelease();
-    }
-    
     glutPostRedisplay();
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    if(programState == state::end){
+        if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.pressDown();
+        } else {
+            replay.release();
+        }
+
+        if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && replay.isOverlapping(x, y)) {
+            replay.click(setProgramStateStart);
+        }
+    }
+
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
         if (ringSelected){
             for (int i = 0; i < allDisks.size(); ++i) {
@@ -224,23 +244,6 @@ void mouse(int button, int state, int x, int y) {
                     break;
                 }
             }
-        }
-    }
-
-    // play again button
-    if (programState == state::end) {
-        if (state == GLUT_DOWN &&
-            button == GLUT_LEFT_BUTTON &&
-            game.getPlayAgainButton().isOverlapping(x, y)) {
-            game.playAgainButtonPressDown();
-        } else {
-            game.playAgainButtonRelease();
-        }
-
-        if (state == GLUT_UP &&
-            button == GLUT_LEFT_BUTTON &&
-            game.getPlayAgainButton().isOverlapping(x, y)) {
-            game.playAgainButtonClick();
         }
     }
 

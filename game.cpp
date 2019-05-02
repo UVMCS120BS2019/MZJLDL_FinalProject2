@@ -3,7 +3,7 @@
 //
 
 #include "game.h"
-
+#include "confetti.h"
 Game::Game() : box({1, 0, 0}, {350, 220}, 200, 50),
                 playAgainButton(box, "Play Again?") {
 
@@ -29,32 +29,3 @@ void Game::drawString(string label, int x, int y) {
     }
     glEnd();
 }
-
-// ==================
-// play again button
-// ==================
-
-void Game::setPlayAgainButton(const Button &playAgainButton) {
-    Game::playAgainButton = playAgainButton;
-}
-
-const Button& Game::getPlayAgainButton() const {
-    return playAgainButton;
-}
-
-void Game::playAgainButtonHover() {
-    playAgainButton.hover();
-}
-
-void Game::playAgainButtonRelease() {
-    playAgainButton.release();
-}
-
-void Game::playAgainButtonPressDown() {
-    playAgainButton.pressDown();
-}
-
-void Game::playAgainButtonClick() {
-   // playAgainButton.click(setProgramStateStart);
-}
-
