@@ -16,7 +16,7 @@ int wd;
 int lastTick;
 Game game;
 int counter = 0;
-int numDisks = 7;
+int numDisks = 3;
 Confetti confetti;
 vector<Stack*> stacks;
 static Stack stack1(1);
@@ -67,6 +67,9 @@ void startAllDisksFresh(){
     stack1.clear();
     stack2.clear();
     stack3.clear();
+    if (numDisks > 8){
+        numDisks = 8;
+    }
     switch (numDisks){
         case 8:
             stack1.addDisk(&disk1);
