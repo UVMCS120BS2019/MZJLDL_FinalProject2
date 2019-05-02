@@ -6,9 +6,10 @@
 #include "confetti.h"
 
 void Game::drawStart() {
-    drawString("Welcome to Hanoi!", 280, 40);
-    drawString("Please hit 'Enter' to Begin", 250, 70);
+    drawString("Welcome to Hanoi!", 280, 70);
     drawString("Select the number of disks you want to play with: ", 140, 100);
+    drawString("Please hit 'Enter' to Begin", 250, 450);
+
 }
 
 void Game::drawGame() {
