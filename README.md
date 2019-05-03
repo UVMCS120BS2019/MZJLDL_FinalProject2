@@ -17,5 +17,5 @@ The goal of the puzzle is to move all the disks from the leftmost peg to the rig
 * Hit the Reset button to move all pegs to their orignal position and to reset the number of moves 
 * If you complete the game, it will bring you to and end screen with a Replay button
 
-# Polymorthisis
+# Polymorphism
 If the player completes the game, confetti will be displayed on the end screen. The confetti consists of Quads and Circles, which are all stored in a vector of Shape pointers. Polymorphism is used to draw all of these shapes in a for loop, calling the appropriate drawing method depending on the class of the shape.
